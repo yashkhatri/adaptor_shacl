@@ -89,55 +89,52 @@ public class SampleAdaptorManager {
 		// End of user code
 	}
 
-    public static ServiceProviderInfo[] getServiceProviderInfos(HttpServletRequest httpServletRequest)
-    {
-		ServiceProviderInfo[] serviceProviderInfos = {};
-		// TODO Implement code to return the set of ServiceProviders
-		
-		// Start of user code "ServiceProviderInfo[] getServiceProviderInfos(...)"
-		ServiceProviderInfo x = new ServiceProviderInfo();
-		x.name = "1";
-		x.serviceProviderId = "1";
-		serviceProviderInfos = new ServiceProviderInfo[1];
-		serviceProviderInfos[0] = x;
+    public static ServiceProviderInfo[] getServiceProviderInfos(
+        HttpServletRequest httpServletRequest) {
+        ServiceProviderInfo[] serviceProviderInfos = {};
+        // TODO Implement code to return the set of ServiceProviders
+
+        // Start of user code "ServiceProviderInfo[] getServiceProviderInfos(...)"
+        ServiceProviderInfo x = new ServiceProviderInfo();
+        x.name = "1";
+        x.serviceProviderId = "1";
+        serviceProviderInfos = new ServiceProviderInfo[1];
+        serviceProviderInfos[0] = x;
 
         Option<String> none = Option.<String>apply(null);
-		try {
+        try {
 //			String modelPath = "/Users/andrew/kth/tempcode/shaclex/examples/shacl/good1-d.ttl";
 //			File file = new File(modelPath);
-            InputStream rdfStream = SampleAdaptorManager.class.getResourceAsStream(
-                "/good1-d.ttl");
+            InputStream rdfStream = SampleAdaptorManager.class.getResourceAsStream("/good1-d.ttl");
 //            Try<RDFAsJenaModel> rdf_try = RDFAsJenaModel.fromChars(fileAsCharSequence(file),
 //				"TURTLE", none);
             Try<RDFAsJenaModel> rdf_try = RDFAsJenaModel.fromChars(streamAsCharSequence(rdfStream),
-				"TURTLE", none);
+                "TURTLE", none);
 
 //			String schemaPath = "/Users/andrew/kth/tempcode/shaclex/examples/shacl/good1-s.ttl";
 //			File fileSchema = new File(schemaPath);
             InputStream schemaStream = SampleAdaptorManager.class.getResourceAsStream(
                 "/good1-s.ttl");
-			Try<Schema> schema_try = Schemas.fromString(streamAsCharSequence(schemaStream), "TURTLE",
-				"ShaClex", none);
+            Try<Schema> schema_try = Schemas.fromString(streamAsCharSequence(schemaStream),
+                "TURTLE", "ShaClex", none);
 
-			String trigger = "TargetDecls";
+            String trigger = "TargetDecls";
 
-			if (rdf_try.isSuccess() && schema_try.isSuccess()) {
-				RDFAsJenaModel rdf = rdf_try.get();
-				Schema schema = schema_try.get();
+            if (rdf_try.isSuccess() && schema_try.isSuccess()) {
+                RDFAsJenaModel rdf = rdf_try.get();
+                Schema schema = schema_try.get();
 
-				PrefixMap nodeMap = rdf.getPrefixMap();
-				PrefixMap shapesMap = schema.pm();
+                PrefixMap nodeMap = rdf.getPrefixMap();
+                PrefixMap shapesMap = schema.pm();
 
-				Result r = schema.validate(rdf, trigger, none, none, PrefixMap.empty(),
-					PrefixMap.empty());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+                Result r = schema.validate(rdf, trigger, none, none, nodeMap, shapesMap);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		
-		// End of user code
-		return serviceProviderInfos;
+        // End of user code
+        return serviceProviderInfos;
     }
 
 	public static List<AResource> queryAResources(HttpServletRequest httpServletRequest, final String serviceProviderId, String where, int page, int limit)
