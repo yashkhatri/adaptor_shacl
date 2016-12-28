@@ -1,0 +1,13 @@
+# Maven
+/target/
+/build/
+/overlays/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
