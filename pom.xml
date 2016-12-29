@@ -10,7 +10,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.lyo>2.1.0</version.lyo>
-        <version.jetty>9.2.20.v20161216</version.jetty>
+        <version.jetty>9.4.0.v20161208</version.jetty>
         <version.jvm>1.8</version.jvm>
     </properties>
 
@@ -23,6 +23,10 @@
         <repository>
             <id>maven-legacy</id>
             <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>labra</id>
+            <url>https://dl.bintray.com/labra/maven</url>
         </repository>
     </repositories>
 
@@ -109,9 +113,9 @@
         <dependency>
             <groupId>es.weso</groupId>
             <artifactId>shaclex_2.11</artifactId>
-            <version>0.0.55</version>
+            <version>0.0.54</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>es.weso</groupId>
             <artifactId>srdfjena_2.11</artifactId>
             <version>0.0.55</version>
@@ -134,7 +138,7 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -153,7 +157,12 @@
             <dependency>
                 <groupId>org.apache.jena</groupId>
                 <artifactId>jena-core</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.jena</groupId>
+                <artifactId>jena-arq</artifactId>
+                <version>3.1.1</version>
             </dependency>
             <dependency>
                 <groupId>org.scala-lang</groupId>
