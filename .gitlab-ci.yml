@@ -1,4 +1,18 @@
 image: maven:3-jdk-8
 
+variables:
+  MAVEN_OPTS: -Dmaven.repo.local=/cache/maven.repository
+
 build:
-  script: "mvn clean verify -B"
+  script:
+  - mvn clean verify -B
+
+pages:
+  script:
+  - mvn javadoc:javadoc -B
+  - mvn site -B
+  - tree
+  - mv target/site/ public/
+  artifacts:
+    paths:
+    - public
