@@ -21,30 +21,6 @@
       <artifactId>shaclex_2.12</artifactId>
       <version>${version.shaclex}</version>
     </dependency>
-    <!--        <dependency>
-                <groupId>es.weso</groupId>
-                <artifactId>srdfjena_2.11</artifactId>
-                <version>0.0.55</version>
-            </dependency>
-            <dependency>
-                <groupId>es.weso</groupId>
-                <artifactId>srdf_2.11</artifactId>
-                <version>0.0.55</version>
-            </dependency>
-            <dependency>
-                <groupId>es.weso</groupId>
-                <artifactId>schema_2.11</artifactId>
-                <version>0.0.55</version>
-            </dependency>
-            <dependency>
-                <groupId>es.weso</groupId>
-                <artifactId>typing_2.11</artifactId>
-                <version>0.0.55</version>
-            </dependency>
-            <dependency>
-                <groupId>org.scala-lang</groupId>
-                <artifactId>scala-library</artifactId>
-            </dependency>-->
     <dependency>
       <groupId>org.eclipse.lyo.oslc4j.core</groupId>
       <artifactId>oslc4j-core</artifactId>
