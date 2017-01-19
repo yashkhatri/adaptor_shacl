@@ -98,33 +98,25 @@ public class SampleAdaptorManager {
     serviceProviderInfos = new ServiceProviderInfo[1];
     serviceProviderInfos[0] = x;
 
-    Option<String> none = Option.<String>apply(null);
-//			String modelPath = "/Users/andrew/kth/tempcode/shaclex/examples/shacl/good1-d.ttl";
-//			File file = new File(modelPath);
+    Option<String> none = Option.apply(null);
     InputStream rdfStream = SampleAdaptorManager.class.getResourceAsStream("/good1-d.ttl");
-//            Try<RDFAsJenaModel> rdf_try = RDFAsJenaModel.fromChars(fileAsCharSequence(file),
-//				"TURTLE", none);
-    Try<RDFAsJenaModel> rdf_try = null;
-    CharSequence rdfstreamAsCharSequence = null;
+    Try<RDFAsJenaModel> rdf_try;
+    CharSequence rdfStreamAsCharSequence = null;
     try {
-      rdfstreamAsCharSequence = streamAsCharSequence(rdfStream);
+      rdfStreamAsCharSequence = streamAsCharSequence(rdfStream);
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("Failed to read the data file", e);
     }
-    rdf_try = RDFAsJenaModel.fromChars(rdfstreamAsCharSequence, "TURTLE", none);
+    rdf_try = RDFAsJenaModel.fromChars(rdfStreamAsCharSequence, "TURTLE", none);
 
-//			String schemaPath = "/Users/andrew/kth/tempcode/shaclex/examples/shacl/good1-s.ttl";
-//			File fileSchema = new File(schemaPath);
     InputStream schemaStream = SampleAdaptorManager.class.getResourceAsStream("/good1-s.ttl");
     CharSequence streamAsCharSequence = null;
     try {
       streamAsCharSequence = streamAsCharSequence(schemaStream);
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("Failed to read the schema file", e);
     }
     validate_v60(none, rdf_try, streamAsCharSequence);
-
-//    validate_v54(rdfstreamAsCharSequence, streamAsCharSequence);
 
     // End of user code
     return serviceProviderInfos;
@@ -148,26 +140,6 @@ public class SampleAdaptorManager {
       log.info(r.show());
     }
   }
-
-  private static void validate_v54(final CharSequence rdfstreamAsCharSequence,
-    final CharSequence streamAsCharSequence) {
-//    Option<String> base = Option.apply(null);
-//    List<String> emptyErrors = new ArrayList<>();
-//    Try<Schema> t = Schemas.fromString(streamAsCharSequence, "TURTLE", "SHACLex", base);
-//    if (t.isSuccess()) {
-//      Schema s = t.get();
-//      Try<String> tstr = s.serialize("TURTLE");
-//      if (tstr.isSuccess()) {
-//        Try<RDFAsJenaModel> trdf = RDFAsJenaModel.fromChars(rdfstreamAsCharSequence, "TURTLE",
-//          base);
-//        if (trdf.isSuccess()) {
-//          Result r = s.validate(trdf.get());
-//          String strResult = r.serialize("TURTLE");
-//          log.debug(strResult);
-//        }
-//      }
-//    }
-}
 
   public static List<AResource> queryAResources(HttpServletRequest httpServletRequest,
     final String serviceProviderId, String where, int page, int limit) {
