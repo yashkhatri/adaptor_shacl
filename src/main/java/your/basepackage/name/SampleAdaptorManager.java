@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContextEvent;
 
@@ -35,19 +34,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
-import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Option;
-import your.basepackage.name.servlet.ServiceProviderCatalogSingleton;
-import your.basepackage.name.ServiceProviderInfo;
 import your.basepackage.name.resources.AResource;
 
 // Start of user code imports
 
-import es.weso.shacl.Validator;
-import scala.util.Success;
 import scala.util.Try;
 import es.weso.schema.Schema;
 import es.weso.rdf.jena.RDFAsJenaModel;
@@ -129,7 +122,7 @@ public class SampleAdaptorManager {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    validate_v55(none, rdf_try, streamAsCharSequence);
+    validate_v60(none, rdf_try, streamAsCharSequence);
 
 //    validate_v54(rdfstreamAsCharSequence, streamAsCharSequence);
 
@@ -137,7 +130,7 @@ public class SampleAdaptorManager {
     return serviceProviderInfos;
   }
 
-  private static void validate_v55(final Option<String> none, final Try<RDFAsJenaModel> rdf_try,
+  private static void validate_v60(final Option<String> none, final Try<RDFAsJenaModel> rdf_try,
     final CharSequence streamAsCharSequence) {
     Try<Schema> schema_try = Schemas.fromString(streamAsCharSequence, "TURTLE", "ShaClex", none);
 

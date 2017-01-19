@@ -9,18 +9,22 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.jvm>1.8</version.jvm>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <version.jetty>9.4.0.v20161208</version.jetty>
-    <version.lyo>2.1.0</version.lyo>
+    <version.lyo>3.0.0-SNAPSHOT</version.lyo>
     <version.shaclex>0.0.60</version.shaclex>
+    <jena.version>3.0.1</jena.version>
   </properties>
 
   <dependencies>
+    <!--SHACL-->
     <dependency>
       <groupId>es.weso</groupId>
       <artifactId>shaclex_2.12</artifactId>
       <version>${version.shaclex}</version>
     </dependency>
+    <!--Lyo-->
     <dependency>
       <groupId>org.eclipse.lyo.oslc4j.core</groupId>
       <artifactId>oslc4j-core</artifactId>
@@ -41,6 +45,7 @@
       <artifactId>oslc4j-json4j-provider</artifactId>
       <version>${version.lyo}</version>
     </dependency>
+<!--
     <dependency>
       <groupId>org.eclipse.lyo.server</groupId>
       <artifactId>oauth-core</artifactId>
@@ -57,22 +62,27 @@
       <version>${version.lyo}</version>
       <type>war</type>
     </dependency>
-    <dependency>
+-->
+<!--    <dependency>
       <groupId>org.eclipse.lyo.clients</groupId>
       <artifactId>oslc-java-client</artifactId>
       <version>${version.lyo}</version>
-    </dependency>
+    </dependency>-->
+    <!--Common libs-->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.5</version>
     </dependency>
+    <!--Provided-->
+<!--
     <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>jsr311-api</artifactId>
       <version>1.1.1</version>
       <scope>provided</scope>
     </dependency>
+-->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
@@ -86,13 +96,14 @@
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-core</artifactId>
-        <version>3.1.1</version>
+        <version>${jena.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.jena</groupId>
         <artifactId>jena-arq</artifactId>
-        <version>3.1.1</version>
+        <version>${jena.version}</version>
       </dependency>
+<!--
       <dependency>
         <groupId>org.scala-lang</groupId>
         <artifactId>scala-library</artifactId>
@@ -103,9 +114,9 @@
         <artifactId>scala-reflect</artifactId>
         <version>2.11.8</version>
       </dependency>
+-->
     </dependencies>
   </dependencyManagement>
-
 
   <build>
     <plugins>
@@ -129,15 +140,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>${version.jvm}</source>
-          <target>${version.jvm}</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <executions>
           <execution>
@@ -146,6 +148,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <additionalparam>-Xdoclint:none</additionalparam>
+        </configuration>
       </plugin>
     </plugins>
   </build>
