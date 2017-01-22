@@ -30,16 +30,19 @@ import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
 
 public interface SampleAdaptorConstants
 {
-	// Start of user code user constants
+    // Start of user code user constants
 	// End of user code
 
-	public static String SAMPLEDOMAIN_DOMAIN = "http://www.sampledomain.org/sam#";
-	public static String SAMPLEDOMAIN_NAMSPACE = "http://www.sampledomain.org/sam#";
-	public static String SAMPLEDOMAIN_NAMSPACE_PREFIX = "sam";
+    public static String SAMPLEDOMAIN_DOMAIN = "http://www.sampledomain.org/sam#";
+    public static String SAMPLEDOMAIN_NAMSPACE = "http://www.sampledomain.org/sam#";
+    public static String SAMPLEDOMAIN_NAMSPACE_PREFIX = "sam";
 
-	public static String ARESOURCE = "AResource";
-	public static String PATH_ARESOURCE = "aResource";
-	public static String TYPE_ARESOURCE = SAMPLEDOMAIN_NAMSPACE + "AResource";
+    public static String ARESOURCE = "AResource";
+    public static String PATH_ARESOURCE = "aResource";
+    public static String TYPE_ARESOURCE = SAMPLEDOMAIN_NAMSPACE + "AResource";
+    public static String ANOTHERRESOURCE = "AnotherResource";
+    public static String PATH_ANOTHERRESOURCE = "anotherResource";
+    public static String TYPE_ANOTHERRESOURCE = SAMPLEDOMAIN_NAMSPACE + "AnotherResource";
 
     public static final String HDR_OSLC_VERSION = "OSLC-Core-Version";
 

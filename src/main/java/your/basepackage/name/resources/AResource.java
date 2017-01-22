@@ -66,6 +66,7 @@ import org.eclipse.lyo.oslc4j.core.model.ValueType;
 
 import your.basepackage.name.servlet.ServletListener;
 import your.basepackage.name.SampleAdaptorConstants;
+import your.basepackage.name.resources.AnotherResource;
 
 // Start of user code imports
 // End of user code
@@ -82,196 +83,432 @@ public class AResource
     extends AbstractResource
     implements IAResource
 {
-	// Start of user code attributeAnnotation:aProperty
+    // Start of user code attributeAnnotation:anIntegerProperty
+    // End of user code
+    private Integer anIntegerProperty;
+    // Start of user code attributeAnnotation:aStringProperty
+    // End of user code
+    private String aStringProperty;
+    // Start of user code attributeAnnotation:aSetOfDates
+    // End of user code
+    private HashSet<Date> aSetOfDates = new HashSet<Date>();
+    // Start of user code attributeAnnotation:aReferenceProperty
+    // End of user code
+    private Link aReferenceProperty = new Link();
+    
+    // Start of user code classAttributes
 	// End of user code
-	private String aProperty;
-	
-
-	// Start of user code classAttributes
+    // Start of user code classMethods
 	// End of user code
-
-	// Start of user code classMethods
-	// End of user code
-
-	public AResource()
-	       throws URISyntaxException
-	{
-	    super();
-	
-	    // Start of user code constructor1
+    public AResource()
+           throws URISyntaxException
+    {
+        super();
+    
+        // Start of user code constructor1
 	    // End of user code
-	}
-	
-	public AResource(final URI about)
-	       throws URISyntaxException
-	{
-	    super(about);
-	
-	    // Start of user code constructor2
+    }
+    
+    public AResource(final URI about)
+           throws URISyntaxException
+    {
+        super(about);
+    
+        // Start of user code constructor2
 	    // End of user code
-	}
-	
-	public AResource(final String serviceProviderId, final String aResourceId)
-	       throws URISyntaxException
-	{
-	    this (constructURI(serviceProviderId, aResourceId));
-	    // Start of user code constructor3
+    }
+    
+    public AResource(final String serviceProviderId, final String aResourceId)
+           throws URISyntaxException
+    {
+        this (constructURI(serviceProviderId, aResourceId));
+        // Start of user code constructor3
 	    // End of user code
-	}
-	
-	public static URI constructURI(final String serviceProviderId, final String aResourceId)
-	{
-	    String basePath = ServletListener.getServicesBase();
-	    Map<String, Object> pathParameters = new HashMap<String, Object>();
-	    pathParameters.put("serviceProviderId", serviceProviderId);
-	    pathParameters.put("aResourceId", aResourceId);
-	    String instanceURI = "serviceProviders/{serviceProviderId}/aResources/{aResourceId}";
-	
-	    final UriBuilder builder = UriBuilder.fromUri(basePath);
-	    return builder.path(instanceURI).buildFromMap(pathParameters);
-	}
-	
-	public static Link constructLink(final String serviceProviderId, final String aResourceId , final String label)
-	{
-	    return new Link(constructURI(serviceProviderId, aResourceId), label);
-	}
-	
-	public static Link constructLink(final String serviceProviderId, final String aResourceId)
-	{
-	    return new Link(constructURI(serviceProviderId, aResourceId));
-	}
-	
-
-	public String toString()
-	{
-	    return toString(false);
-	}
-	
-	public String toString(boolean asLocalResource)
-	{
-	    String result = "";
-	    // Start of user code toString_init
+    }
+    
+    public static URI constructURI(final String serviceProviderId, final String aResourceId)
+    {
+        String basePath = ServletListener.getServicesBase();
+        Map<String, Object> pathParameters = new HashMap<String, Object>();
+        pathParameters.put("serviceProviderId", serviceProviderId);
+        pathParameters.put("aResourceId", aResourceId);
+        String instanceURI = "serviceProviders/{serviceProviderId}/aResources/{aResourceId}";
+    
+        final UriBuilder builder = UriBuilder.fromUri(basePath);
+        return builder.path(instanceURI).buildFromMap(pathParameters);
+    }
+    
+    public static Link constructLink(final String serviceProviderId, final String aResourceId , final String label)
+    {
+        return new Link(constructURI(serviceProviderId, aResourceId), label);
+    }
+    
+    public static Link constructLink(final String serviceProviderId, final String aResourceId)
+    {
+        return new Link(constructURI(serviceProviderId, aResourceId));
+    }
+    
+    public String toString()
+    {
+        return toString(false);
+    }
+    
+    public String toString(boolean asLocalResource)
+    {
+        String result = "";
+        // Start of user code toString_init
 	    // End of user code
-	
-	    if (asLocalResource) {
-	        result = result + "{a Local AResource Resource} - update AResource.toString() to present resource as desired.";
-	        // Start of user code toString_bodyForLocalResource
+    
+        if (asLocalResource) {
+            result = result + "{a Local AResource Resource} - update AResource.toString() to present resource as desired.";
+            // Start of user code toString_bodyForLocalResource
 	        // End of user code
-	    }
-	    else {
-	        result = getAbout().toString();
-	    }
-	
-	    // Start of user code toString_finalize
+        }
+        else {
+            result = getAbout().toString();
+        }
+    
+        // Start of user code toString_finalize
 	    // End of user code
-	
-	    return result;
-	}
-	
-	public String toHtml()
-	{
-	    return toHtml(false);
-	}
-	
-	public String toHtml(boolean asLocalResource)
-	{
-	    String result = "";
-	    // Start of user code toHtml_init
+    
+        return result;
+    }
+    
+    public String toHtml()
+    {
+        return toHtml(false);
+    }
+    
+    public String toHtml(boolean asLocalResource)
+    {
+        String result = "";
+        // Start of user code toHtml_init
 	    // End of user code
-	
-	    if (asLocalResource) {
-	        result = toString(true);
-	        // Start of user code toHtml_bodyForLocalResource
+    
+        if (asLocalResource) {
+            result = toString(true);
+            // Start of user code toHtml_bodyForLocalResource
 	        // End of user code
-	    }
-	    else {
-	        result = "<a href=\"" + getAbout() + "\">" + toString() + "</a>";
-	    }
-	
-	    // Start of user code toHtml_finalize
+        }
+        else {
+            result = "<a href=\"" + getAbout() + "\">" + toString() + "</a>";
+        }
+    
+        // Start of user code toHtml_finalize
 	    // End of user code
-	
-	    return result;
-	}
-
-	
-
-	// Start of user code getterAnnotation:aProperty
-	// End of user code
-	@OslcName("aProperty")
-	@OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aProperty")
-	@OslcDescription("a Property")
-	@OslcOccurs(Occurs.ExactlyOne)
-	@OslcValueType(ValueType.String)
-	@OslcReadOnly(false)
-	@OslcTitle("a Property")
-	public String getAProperty()
-	{
-	    // Start of user code getterInit:aProperty
-	    // End of user code
-	    return aProperty;
-	}
-	
-
-	// Start of user code setterAnnotation:aProperty
-	// End of user code
-	public void setAProperty(final String aProperty )
-	{
-	    // Start of user code setterInit:aProperty
-	    // End of user code
-	    this.aProperty = aProperty;
-	    // Start of user code setterFinalize:aProperty
-	    // End of user code
-	}
-	
-
-	static public String aPropertyToHtmlForCreation (final HttpServletRequest httpServletRequest)
-	{
-	    String s = "";
-	
-	    // Start of user code "Init:aPropertyToHtmlForCreation(...)"
-	    // End of user code
-	
-	    s = s + "<label for=\"aProperty\">aProperty: </LABEL>";
-	
-	    // Start of user code "Mid:aPropertyToHtmlForCreation(...)"
-	    // End of user code
-	
-	    s= s + "<input name=\"aProperty\" type=\"text\" style=\"width: 400px\" id=\"aProperty\" >";
-	    // Start of user code "Finalize:aPropertyToHtmlForCreation(...)"
-	    // End of user code
-	
-	    return s;
-	}
-	
-	
-	public String aPropertyToHtml()
-	{
-	    String s = "";
-	
-	    // Start of user code aPropertytoHtml_init
-	    // End of user code
-	
-	    s = s + "<label for=\"aProperty\"><strong>aProperty</strong>: </LABEL>";
-	
-	    // Start of user code aPropertytoHtml_mid
-	    // End of user code
-	
-	    try {
-	        if (aProperty == null) {
-	            s= s + "<em>null</em>";
-	        }
-	        else {
-	            s= s + aProperty.toString();
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	
-	    // Start of user code aPropertytoHtml_finalize
-	    // End of user code
-	
-	    return s;
-	}
-	
+    
+        return result;
+    }
+    
+    public void addASetOfDates(final Date aSetOfDates)
+    {
+        this.aSetOfDates.add(aSetOfDates);
+    }
+    
+    
+    // Start of user code getterAnnotation:anIntegerProperty
+    // End of user code
+    @OslcName("anIntegerProperty")
+    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "anIntegerProperty")
+    @OslcOccurs(Occurs.ExactlyOne)
+    @OslcValueType(ValueType.Integer)
+    @OslcReadOnly(false)
+    public Integer getAnIntegerProperty()
+    {
+        // Start of user code getterInit:anIntegerProperty
+        // End of user code
+        return anIntegerProperty;
+    }
+    
+    // Start of user code getterAnnotation:aStringProperty
+    // End of user code
+    @OslcName("aStringProperty")
+    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aStringProperty")
+    @OslcDescription("a Simple Single String Property")
+    @OslcOccurs(Occurs.ExactlyOne)
+    @OslcValueType(ValueType.String)
+    @OslcReadOnly(false)
+    @OslcTitle("a Property")
+    public String getAStringProperty()
+    {
+        // Start of user code getterInit:aStringProperty
+        // End of user code
+        return aStringProperty;
+    }
+    
+    // Start of user code getterAnnotation:aSetOfDates
+    // End of user code
+    @OslcName("aSetOfDates")
+    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aSetOfDates")
+    @OslcDescription("")
+    @OslcOccurs(Occurs.OneOrMany)
+    @OslcValueType(ValueType.DateTime)
+    @OslcReadOnly(false)
+    @OslcTitle("")
+    public HashSet<Date> getASetOfDates()
+    {
+        // Start of user code getterInit:aSetOfDates
+        // End of user code
+        return aSetOfDates;
+    }
+    
+    // Start of user code getterAnnotation:aReferenceProperty
+    // End of user code
+    @OslcName("aReferenceProperty")
+    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aReferenceProperty")
+    @OslcOccurs(Occurs.ZeroOrOne)
+    @OslcValueType(ValueType.Resource)
+    @OslcRange({SampleAdaptorConstants.TYPE_ANOTHERRESOURCE})
+    @OslcReadOnly(false)
+    public Link getAReferenceProperty()
+    {
+        // Start of user code getterInit:aReferenceProperty
+        // End of user code
+        return aReferenceProperty;
+    }
+    
+    
+    // Start of user code setterAnnotation:anIntegerProperty
+    // End of user code
+    public void setAnIntegerProperty(final Integer anIntegerProperty )
+    {
+        // Start of user code setterInit:anIntegerProperty
+        // End of user code
+        this.anIntegerProperty = anIntegerProperty;
+    
+        // Start of user code setterFinalize:anIntegerProperty
+        // End of user code
+    }
+    
+    // Start of user code setterAnnotation:aStringProperty
+    // End of user code
+    public void setAStringProperty(final String aStringProperty )
+    {
+        // Start of user code setterInit:aStringProperty
+        // End of user code
+        this.aStringProperty = aStringProperty;
+    
+        // Start of user code setterFinalize:aStringProperty
+        // End of user code
+    }
+    
+    // Start of user code setterAnnotation:aSetOfDates
+    // End of user code
+    public void setASetOfDates(final HashSet<Date> aSetOfDates )
+    {
+        // Start of user code setterInit:aSetOfDates
+        // End of user code
+        this.aSetOfDates.clear();
+        if (aSetOfDates != null)
+        {
+            this.aSetOfDates.addAll(aSetOfDates);
+        }
+    
+        // Start of user code setterFinalize:aSetOfDates
+        // End of user code
+    }
+    
+    // Start of user code setterAnnotation:aReferenceProperty
+    // End of user code
+    public void setAReferenceProperty(final Link aReferenceProperty )
+    {
+        // Start of user code setterInit:aReferenceProperty
+        // End of user code
+        this.aReferenceProperty = aReferenceProperty;
+    
+        // Start of user code setterFinalize:aReferenceProperty
+        // End of user code
+    }
+    
+    
+    static public String anIntegerPropertyToHtmlForCreation (final HttpServletRequest httpServletRequest)
+    {
+        String s = "";
+    
+        // Start of user code "Init:anIntegerPropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        s = s + "<label for=\"anIntegerProperty\">anIntegerProperty: </LABEL>";
+    
+        // Start of user code "Mid:anIntegerPropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        s= s + "<input name=\"anIntegerProperty\" type=\"text\" style=\"width: 400px\" id=\"anIntegerProperty\" >";
+        // Start of user code "Finalize:anIntegerPropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        return s;
+    }
+    
+    static public String aStringPropertyToHtmlForCreation (final HttpServletRequest httpServletRequest)
+    {
+        String s = "";
+    
+        // Start of user code "Init:aStringPropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        s = s + "<label for=\"aStringProperty\">aStringProperty: </LABEL>";
+    
+        // Start of user code "Mid:aStringPropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        s= s + "<input name=\"aStringProperty\" type=\"text\" style=\"width: 400px\" id=\"aStringProperty\" >";
+        // Start of user code "Finalize:aStringPropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        return s;
+    }
+    
+    static public String aSetOfDatesToHtmlForCreation (final HttpServletRequest httpServletRequest)
+    {
+        String s = "";
+    
+        // Start of user code "Init:aSetOfDatesToHtmlForCreation(...)"
+        // End of user code
+    
+        s = s + "<label for=\"aSetOfDates\">aSetOfDates: </LABEL>";
+    
+        // Start of user code "Mid:aSetOfDatesToHtmlForCreation(...)"
+        // End of user code
+    
+        s= s + "<input name=\"aSetOfDates\" type=\"text\" style=\"width: 400px\" id=\"aSetOfDates\" required>";
+        // Start of user code "Finalize:aSetOfDatesToHtmlForCreation(...)"
+        // End of user code
+    
+        return s;
+    }
+    
+    static public String aReferencePropertyToHtmlForCreation (final HttpServletRequest httpServletRequest)
+    {
+        String s = "";
+    
+        // Start of user code "Init:aReferencePropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        s = s + "<label for=\"aReferenceProperty\">aReferenceProperty: </LABEL>";
+    
+        // Start of user code "Mid:aReferencePropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        // Start of user code "Finalize:aReferencePropertyToHtmlForCreation(...)"
+        // End of user code
+    
+        return s;
+    }
+    
+    
+    public String anIntegerPropertyToHtml()
+    {
+        String s = "";
+    
+        // Start of user code anIntegerPropertytoHtml_init
+        // End of user code
+    
+        s = s + "<label for=\"anIntegerProperty\"><strong>anIntegerProperty</strong>: </LABEL>";
+    
+        // Start of user code anIntegerPropertytoHtml_mid
+        // End of user code
+    
+        try {
+            if (anIntegerProperty == null) {
+                s= s + "<em>null</em>";
+            }
+            else {
+                s= s + anIntegerProperty.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        // Start of user code anIntegerPropertytoHtml_finalize
+        // End of user code
+    
+        return s;
+    }
+    
+    public String aStringPropertyToHtml()
+    {
+        String s = "";
+    
+        // Start of user code aStringPropertytoHtml_init
+        // End of user code
+    
+        s = s + "<label for=\"aStringProperty\"><strong>aStringProperty</strong>: </LABEL>";
+    
+        // Start of user code aStringPropertytoHtml_mid
+        // End of user code
+    
+        try {
+            if (aStringProperty == null) {
+                s= s + "<em>null</em>";
+            }
+            else {
+                s= s + aStringProperty.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        // Start of user code aStringPropertytoHtml_finalize
+        // End of user code
+    
+        return s;
+    }
+    
+    public String aSetOfDatesToHtml()
+    {
+        String s = "";
+    
+        // Start of user code aSetOfDatestoHtml_init
+        // End of user code
+    
+        s = s + "<label for=\"aSetOfDates\"><strong>aSetOfDates</strong>: </LABEL>";
+    
+        // Start of user code aSetOfDatestoHtml_mid
+        // End of user code
+    
+        try {
+            s = s + "<ul>";
+            Iterator<Date> itr = aSetOfDates.iterator();
+            while(itr.hasNext()) {
+                s = s + "<li>";
+                s= s + itr.next().toString();
+                s = s + "</li>";
+            }
+            s = s + "</ul>";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        // Start of user code aSetOfDatestoHtml_finalize
+        // End of user code
+    
+        return s;
+    }
+    
+    public String aReferencePropertyToHtml()
+    {
+        String s = "";
+    
+        // Start of user code aReferencePropertytoHtml_init
+        // End of user code
+    
+        s = s + "<label for=\"aReferenceProperty\"><strong>aReferenceProperty</strong>: </LABEL>";
+    
+        // Start of user code aReferencePropertytoHtml_mid
+        // End of user code
+    
+        try {
+            s = s + (new AnotherResource (aReferenceProperty.getValue())).toHtml(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        // Start of user code aReferencePropertytoHtml_finalize
+        // End of user code
+    
+        return s;
+    }
+    
+    
 }

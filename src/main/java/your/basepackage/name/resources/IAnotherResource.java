@@ -64,56 +64,17 @@ import org.eclipse.lyo.oslc4j.core.model.ValueType;
 
 import your.basepackage.name.servlet.ServletListener;
 import your.basepackage.name.SampleAdaptorConstants;
-import your.basepackage.name.resources.IAnotherResource;
 
 // Start of user code imports
 // End of user code
 
 @OslcNamespace(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE)
-@OslcName(SampleAdaptorConstants.ARESOURCE)
-@OslcResourceShape(title = "AResource Resource Shape", describes = SampleAdaptorConstants.TYPE_ARESOURCE)
-public interface IAResource
+@OslcName(SampleAdaptorConstants.ANOTHERRESOURCE)
+@OslcResourceShape(title = "AnotherResource Resource Shape", describes = SampleAdaptorConstants.TYPE_ANOTHERRESOURCE)
+public interface IAnotherResource
 {
 
-    public void addASetOfDates(final Date aSetOfDates );
-
-    @OslcName("anIntegerProperty")
-    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "anIntegerProperty")
-    @OslcOccurs(Occurs.ExactlyOne)
-    @OslcValueType(ValueType.Integer)
-    @OslcReadOnly(false)
-    public Integer getAnIntegerProperty();
-
-    @OslcName("aStringProperty")
-    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aStringProperty")
-    @OslcDescription("a Simple Single String Property")
-    @OslcOccurs(Occurs.ExactlyOne)
-    @OslcValueType(ValueType.String)
-    @OslcReadOnly(false)
-    @OslcTitle("a Property")
-    public String getAStringProperty();
-
-    @OslcName("aSetOfDates")
-    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aSetOfDates")
-    @OslcDescription("")
-    @OslcOccurs(Occurs.OneOrMany)
-    @OslcValueType(ValueType.DateTime)
-    @OslcReadOnly(false)
-    @OslcTitle("")
-    public HashSet<Date> getASetOfDates();
-
-    @OslcName("aReferenceProperty")
-    @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aReferenceProperty")
-    @OslcOccurs(Occurs.ZeroOrOne)
-    @OslcValueType(ValueType.Resource)
-    @OslcRange({SampleAdaptorConstants.TYPE_ANOTHERRESOURCE})
-    @OslcReadOnly(false)
-    public Link getAReferenceProperty();
 
 
-    public void setAnIntegerProperty(final Integer anIntegerProperty );
-    public void setAStringProperty(final String aStringProperty );
-    public void setASetOfDates(final HashSet<Date> aSetOfDates );
-    public void setAReferenceProperty(final Link aReferenceProperty );
 }
 

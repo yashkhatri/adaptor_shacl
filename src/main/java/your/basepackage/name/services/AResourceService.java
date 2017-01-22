@@ -72,45 +72,33 @@ import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import your.basepackage.name.SampleAdaptorManager;
 import your.basepackage.name.SampleAdaptorConstants;
 import your.basepackage.name.servlet.ServiceProviderCatalogSingleton;
-import your.basepackage.name.resources.AResource;	
+import your.basepackage.name.resources.AResource;
+import your.basepackage.name.resources.AnotherResource;
 
 // Start of user code imports
 // End of user code
 
 // Start of user code pre_class_code
 // End of user code
-
 @OslcService(SampleAdaptorConstants.SAMPLEDOMAIN_DOMAIN)
 @Path("serviceProviders/{serviceProviderId}/aResources")
 public class AResourceService
 {
-	@Context private HttpServletRequest httpServletRequest;
-	@Context private HttpServletResponse httpServletResponse;
-	@Context private UriInfo uriInfo;
+    @Context private HttpServletRequest httpServletRequest;
+    @Context private HttpServletResponse httpServletResponse;
+    @Context private UriInfo uriInfo;
 
-	// Start of user code class_attributes
+    // Start of user code class_attributes
 	// End of user code
-	
-	// Start of user code class_methods
+
+    // Start of user code class_methods
 	// End of user code
-	
+
     public AResourceService()
     {
         super();
     }
 
-    /**
-     * RDF/XML, XML and JSON representation of a change request collection
-     * 
-     * TODO:  add query support
-     * 
-     * @param productId
-     * @param where
-     * @param pageString
-     * @return
-     * @throws IOException
-     * @throws ServletException
-     */
     @OslcQueryCapability
     (
         title = "AResource Query Capability",
@@ -118,133 +106,107 @@ public class AResourceService
         resourceShape = OslcConstants.PATH_RESOURCE_SHAPES + "/" + SampleAdaptorConstants.PATH_ARESOURCE,
         resourceTypes = {SampleAdaptorConstants.TYPE_ARESOURCE},
         usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-    ) 
-    @GET 
+    )
+    @GET
     @Path("query")
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     public AResource[] queryAResources(
-													@PathParam("serviceProviderId") final String serviceProviderId ,
-    		                                 		@QueryParam("oslc.where") final String where,
-    		                                 		@QueryParam("page") final String pageString,
-													@QueryParam("limit") final String limitString) throws IOException, ServletException 
+                                                    @PathParam("serviceProviderId") final String serviceProviderId ,
+                                                     @QueryParam("oslc.where") final String where,
+                                                     @QueryParam("page") final String pageString,
+                                                    @QueryParam("limit") final String limitString) throws IOException, ServletException
     {
-		int page=0;
-		int limit=20;
-		if (null != pageString) {
-			page = Integer.parseInt(pageString);
-		}
-		if (null != limitString) {
-			limit = Integer.parseInt(limitString);
-		}
-        
-		// Start of user code queryAResources
+        int page=0;
+        int limit=20;
+        if (null != pageString) {
+            page = Integer.parseInt(pageString);
+        }
+        if (null != limitString) {
+            limit = Integer.parseInt(limitString);
+        }
+
+        // Start of user code queryAResources
 		// End of user code
 
         final List<AResource> resources = SampleAdaptorManager.queryAResources(httpServletRequest, serviceProviderId, where, page, limit);
         return resources.toArray(new AResource [resources.size()]);
     }
 
-    /**
-     * HTML representation of change request collection
-     * 
-     * Forwards to changerequest_collection_html.jsp to build the html page
-     * 
-     * @param productId
-     * @param changeRequestId
-     * @param pageString
-     * @return
-     * @throws ServletException
-     * @throws IOException
-     */
-	@GET
+    @GET
     @Path("query")
-	@Produces({ MediaType.TEXT_HTML })
-	public Response queryAResourcesAsHtml(
-									@PathParam("serviceProviderId") final String serviceProviderId ,
-                               		@QueryParam("oslc.where") final String where,
-                               		@QueryParam("page") final String pageString,
-			                        @QueryParam("limit") final String limitString) throws ServletException, IOException
-	{
-		int page=0;
-		int limit=20;
-		if (null != pageString) {
-			page = Integer.parseInt(pageString);
-		}
-		if (null != limitString) {
-			limit = Integer.parseInt(limitString);
-		}
+    @Produces({ MediaType.TEXT_HTML })
+    public Response queryAResourcesAsHtml(
+                                    @PathParam("serviceProviderId") final String serviceProviderId ,
+                                       @QueryParam("oslc.where") final String where,
+                                       @QueryParam("page") final String pageString,
+                                    @QueryParam("limit") final String limitString) throws ServletException, IOException
+    {
+        int page=0;
+        int limit=20;
+        if (null != pageString) {
+            page = Integer.parseInt(pageString);
+        }
+        if (null != limitString) {
+            limit = Integer.parseInt(limitString);
+        }
 
-		// Start of user code queryAResourcesAsHtml
+        // Start of user code queryAResourcesAsHtml
 		// End of user code
 
         final List<AResource> resources = SampleAdaptorManager.queryAResources(httpServletRequest, serviceProviderId, where, page, limit);
-		
+
         if (resources!= null) {
-        	httpServletRequest.setAttribute("resources", resources);
-			// Start of user code queryAResourcesAsHtml_setAttributes
+            httpServletRequest.setAttribute("resources", resources);
+            // Start of user code queryAResourcesAsHtml_setAttributes
 			// End of user code
 
-        	httpServletRequest.setAttribute("queryUri", 
+            httpServletRequest.setAttribute("queryUri",
                     uriInfo.getAbsolutePath().toString() + "?oslc.paging=true");
-        	if (resources.size() > limit) {
-        		resources.remove(resources.size() - 1);
-        		httpServletRequest.setAttribute("nextPageUri", 
-        				uriInfo.getAbsolutePath().toString() + "?oslc.paging=true&amp;page=" + (page + 1));
-        	}
-        	RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/your/basepackage/name/aresourcescollection.jsp");
-        	rd.forward(httpServletRequest,httpServletResponse);
+            if (resources.size() > limit) {
+                resources.remove(resources.size() - 1);
+                httpServletRequest.setAttribute("nextPageUri",
+                        uriInfo.getAbsolutePath().toString() + "?oslc.paging=true&amp;page=" + (page + 1));
+            }
+            RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/your/basepackage/name/aresourcescollection.jsp");
+            rd.forward(httpServletRequest,httpServletResponse);
         }
-		
-		throw new WebApplicationException(Status.NOT_FOUND);	
-	}
 
+        throw new WebApplicationException(Status.NOT_FOUND);
+    }
 
-	/**
-	 * Create a single BugzillaChangeRequest via RDF/XML, XML or JSON POST
-	 * @param productId
-	 * @param changeRequest
-	 * @return
-	 * @throws IOException
-	 * @throws ServletException
-	 */
-	@OslcCreationFactory
-	(
-		 title = "",
-		 label = "",
-		 resourceShapes = {OslcConstants.PATH_RESOURCE_SHAPES + "/" + SampleAdaptorConstants.PATH_ARESOURCE},
-		 resourceTypes = {SampleAdaptorConstants.TYPE_ARESOURCE},
-		 usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-	)
+    /**
+     * Create a single AResource via RDF/XML, XML or JSON POST
+     *
+     * @throws IOException
+     * @throws ServletException
+     */
+    @OslcCreationFactory
+    (
+         title = "",
+         label = "",
+         resourceShapes = {OslcConstants.PATH_RESOURCE_SHAPES + "/" + SampleAdaptorConstants.PATH_ARESOURCE},
+         resourceTypes = {SampleAdaptorConstants.TYPE_ARESOURCE},
+         usages = {OslcConstants.OSLC_USAGE_DEFAULT}
+    )
     @POST
     @Path("create")
     @Consumes({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     public Response createAResource(
-            @PathParam("serviceProviderId") final String serviceProviderId , 
+            @PathParam("serviceProviderId") final String serviceProviderId ,
             final AResource aResource
         ) throws IOException, ServletException
     {
-		try {
-    		AResource newResource = SampleAdaptorManager.createAResource(httpServletRequest, aResource, serviceProviderId);
-			httpServletResponse.setHeader("ETag", SampleAdaptorManager.getETagFromAResource(newResource));
-	        return Response.created(newResource.getAbout()).entity(aResource).build();
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		throw new WebApplicationException(e);
-    	}
+        try {
+            AResource newResource = SampleAdaptorManager.createAResource(httpServletRequest, aResource, serviceProviderId);
+            httpServletResponse.setHeader("ETag", SampleAdaptorManager.getETagFromAResource(newResource));
+            return Response.created(newResource.getAbout()).entity(aResource).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new WebApplicationException(e);
+        }
     }
 
-
-	/**
-	 * RDF/XML, XML and JSON representation of a single change request
-	 * 
-	 * @param productId
-	 * @param changeRequestId
-	 * @return
-	 * @throws IOException
-	 * @throws ServletException
-	 * @throws URISyntaxException
-	 */
     @GET
     @Path("{aResourceId}")
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
@@ -252,52 +214,42 @@ public class AResourceService
                 @PathParam("serviceProviderId") final String serviceProviderId, @PathParam("aResourceId") final String aResourceId
         ) throws IOException, ServletException, URISyntaxException
     {
-		// Start of user code getResource_init
+        // Start of user code getResource_init
 		// End of user code
 
         final AResource aAResource = SampleAdaptorManager.getAResource(httpServletRequest, serviceProviderId, aResourceId);
 
         if (aAResource != null) {
-			// Start of user code getAResource
+            // Start of user code getAResource
 			// End of user code
             return aAResource;
         }
 
         throw new WebApplicationException(Status.NOT_FOUND);
     }
-    
-    /**
-     * 
-     * HTML representation for a single change request  - redirect the request directly to Bugzilla
-     * 
-     * @param productId
-     * @param changeRequestId
-     * @throws ServletException
-     * @throws IOException
-     * @throws URISyntaxException
-     */
-	@GET
+
+    @GET
     @Path("{aResourceId}")
-	@Produces({ MediaType.TEXT_HTML })
-	public Response getAResourceAsHtml(
+    @Produces({ MediaType.TEXT_HTML })
+    public Response getAResourceAsHtml(
         @PathParam("serviceProviderId") final String serviceProviderId, @PathParam("aResourceId") final String aResourceId
         ) throws ServletException, IOException, URISyntaxException
-	{	
-		// Start of user code getAResourceAsHtml_init
+    {
+        // Start of user code getAResourceAsHtml_init
 		// End of user code
 
         final AResource aAResource = SampleAdaptorManager.getAResource(httpServletRequest, serviceProviderId, aResourceId);
 
         if (aAResource != null) {
-        	httpServletRequest.setAttribute("aAResource", aAResource);
-			// Start of user code getAResourceAsHtml_setAttributes
+            httpServletRequest.setAttribute("aAResource", aAResource);
+            // Start of user code getAResourceAsHtml_setAttributes
 			// End of user code
 
-        	RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/your/basepackage/name/aresource.jsp");
-        	rd.forward(httpServletRequest,httpServletResponse);
-		}
+            RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/your/basepackage/name/aresource.jsp");
+            rd.forward(httpServletRequest,httpServletResponse);
+        }
 
         throw new WebApplicationException(Status.NOT_FOUND);
-	}
+    }
 
 }

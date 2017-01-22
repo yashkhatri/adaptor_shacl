@@ -4,17 +4,16 @@
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- *
+ *  
  *  The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
  *  and the Eclipse Distribution License is available at
  *  http://www.eclipse.org/org/documents/edl-v10.php.
- *
+ *  
  *  Contributors:
- *
+ *  
  *	   Sam Padgett	       - initial API and implementation
  *     Michael Fiedler     - adapted for OSLC4J
- *     Jad El-khoury        - initial implementation of code generator (https://bugs.eclipse
- *     .org/bugs/show_bug.cgi?id=422448)
+ *     Jad El-khoury        - initial implementation of code generator (https://bugs.eclipse.org/bugs/show_bug.cgi?id=422448)
  *     Matthieu Helleboid   - Support for multiple Service Providers.
  *     Anass Radouani       - Support for multiple Service Providers.
  *
@@ -23,167 +22,162 @@
 
 package your.basepackage.name;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletContextEvent;
-
-import java.net.URISyntaxException;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import scala.Option;
+import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
+import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
+import your.basepackage.name.servlet.ServiceProviderCatalogSingleton;
+import your.basepackage.name.ServiceProviderInfo;
 import your.basepackage.name.resources.AResource;
+import your.basepackage.name.resources.AnotherResource;
+
 
 // Start of user code imports
+import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import scala.util.Try;
 import es.weso.schema.Schema;
-import es.weso.rdf.jena.RDFAsJenaModel;
-import java.io.File;
-import es.weso.schema.Schemas;
-import es.weso.schema.Result;
-import es.weso.rdf.PrefixMap;
+import java.net.URISyntaxException;
 
-// End of user code
+import es.weso.rdf.jena.RDFAsJenaModel;
+import es.weso.schema.Result;
+//End of user code
 
 // Start of user code pre_class_code
 // End of user code
 
 public class SampleAdaptorManager {
 
-  // Start of user code class_attributes
+    // Start of user code class_attributes
   private final static Logger log = LoggerFactory.getLogger(SampleAdaptorManager.class);
   // End of user code
-
-  // Start of user code class_methods
-  private static CharSequence fileAsCharSequence(final File file) throws IOException {
-    return new String(Files.readAllBytes(file.toPath()));
-  }
-
-  private static CharSequence streamAsCharSequence(final InputStream inputStream)
-    throws IOException {
-    return IOUtils.toString(inputStream, Charset.forName("UTF-8"));
-  }
+    
+    
+    // Start of user code class_methods
   // End of user code
 
-  public static void contextInitializeServletListener(
-    final ServletContextEvent servletContextEvent) {
-    // TODO Implement code to establish connection to data backbone etc ...
-
-    // Start of user code contextInitializeServletListener
+    public static void contextInitializeServletListener(final ServletContextEvent servletContextEvent)
+    {
+        
+        // Start of user code contextInitializeServletListener
     // End of user code
-  }
-
-  public static void contextDestroyServletListener(ServletContextEvent servletContextEvent) {
-    // TODO Implement code to shutdown connections to data backbone etc...
-
-    // Start of user code contextDestroyed
-    // End of user code
-  }
-
-  public static ServiceProviderInfo[] getServiceProviderInfos(
-    HttpServletRequest httpServletRequest) {
-    ServiceProviderInfo[] serviceProviderInfos = {};
-    // TODO Implement code to return the set of ServiceProviders
-
-    // Start of user code "ServiceProviderInfo[] getServiceProviderInfos(...)"
-    ServiceProviderInfo x = new ServiceProviderInfo();
-    x.name = "1";
-    x.serviceProviderId = "1";
-    serviceProviderInfos = new ServiceProviderInfo[1];
-    serviceProviderInfos[0] = x;
-
-    Option<String> none = Option.apply(null);
-    InputStream rdfStream = SampleAdaptorManager.class.getResourceAsStream("/good1-d.ttl");
-    Try<RDFAsJenaModel> rdf_try;
-    CharSequence rdfStreamAsCharSequence = null;
-    try {
-      rdfStreamAsCharSequence = streamAsCharSequence(rdfStream);
-    } catch (IOException e) {
-      log.error("Failed to read the data file", e);
     }
-    rdf_try = RDFAsJenaModel.fromChars(rdfStreamAsCharSequence, "TURTLE", none);
 
-    InputStream schemaStream = SampleAdaptorManager.class.getResourceAsStream("/good1-s.ttl");
-    CharSequence streamAsCharSequence = null;
-    try {
-      streamAsCharSequence = streamAsCharSequence(schemaStream);
-    } catch (IOException e) {
-      log.error("Failed to read the schema file", e);
+    public static void contextDestroyServletListener(ServletContextEvent servletContextEvent) 
+    {
+        
+        // Start of user code contextDestroyed
+    // End of user code
     }
-    validate_v60(none, rdf_try, streamAsCharSequence);
+
+    public static ServiceProviderInfo[] getServiceProviderInfos(HttpServletRequest httpServletRequest)
+    {
+        ServiceProviderInfo[] serviceProviderInfos = {};
+        
+        // Start of user code "ServiceProviderInfo[] getServiceProviderInfos(...)"
+	    ServiceProviderInfo x = new ServiceProviderInfo();
+	    x.name = "1";
+	    x.serviceProviderId = "1";
+	    serviceProviderInfos = new ServiceProviderInfo[1];
+	    serviceProviderInfos[0] = x;
+
+	    try {
+	    	Schema schema = Validator.getSchema("/aResource-Shape.ttl");
+	    	if (schema != null) {
+		    	RDFAsJenaModel rdf = Validator.getJenaModel("/aResource.ttl");
+		    	if (rdf != null) {
+		    	    Result r = Validator.validate(rdf, schema);
+		    		if (!r.isValid())
+		    			log.info(r.show());
+		    		else
+		    			log.info("Resource is Valid");
+		    	}
+	    	}
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
     // End of user code
-    return serviceProviderInfos;
-  }
-
-  private static void validate_v60(final Option<String> none, final Try<RDFAsJenaModel> rdf_try,
-    final CharSequence streamAsCharSequence) {
-    Try<Schema> schema_try = Schemas.fromString(streamAsCharSequence, "TURTLE", "ShaClex", none);
-
-    String trigger = "TargetDecls";
-
-    if (rdf_try.isSuccess() && schema_try.isSuccess()) {
-      RDFAsJenaModel rdf = rdf_try.get();
-      Schema schema = schema_try.get();
-
-      PrefixMap nodeMap = rdf.getPrefixMap();
-      PrefixMap shapesMap = schema.pm();
-
-      Result r = schema.validate(rdf, trigger, none, none, nodeMap, shapesMap);
-
-      log.info(r.show());
+        return serviceProviderInfos;
     }
-  }
 
-  public static List<AResource> queryAResources(HttpServletRequest httpServletRequest,
-    final String serviceProviderId, String where, int page, int limit) {
-    List<AResource> resources = null;
-    // TODO Implement code to return a set of resources
-
-    // Start of user code queryAResources
+    public static List<AResource> queryAResources(HttpServletRequest httpServletRequest, final String serviceProviderId, String where, int page, int limit)
+    {
+        List<AResource> resources = null;
+        
+        // Start of user code queryAResources
     // End of user code
-    return resources;
-  }
-
-  public static AResource createAResource(HttpServletRequest httpServletRequest,
-    final AResource aResource, final String serviceProviderId) {
-    AResource newResource = null;
-    // TODO Implement code to create a resource
-
-    // Start of user code createAResource
+        return resources;
+    }
+    public static AResource createAResource(HttpServletRequest httpServletRequest, final AResource aResource, final String serviceProviderId)
+    {
+        AResource newResource = null;
+        
+        // Start of user code createAResource
     newResource = aResource;
+
+    try {
+    	Schema schema = Validator.getSchema("/aResource-Shape.ttl");
+    	if (schema != null) {
+	    		Result r = Validator.validate(aResource, schema);
+	    		if (!r.isValid())
+	    			log.info(r.show());
+	    		else
+	    			log.info("Resource is Valid");
+	    	}
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
     // End of user code
-    return newResource;
-  }
+        return newResource;
+    }
 
-  public static AResource getAResource(HttpServletRequest httpServletRequest,
-    final String serviceProviderId, final String aResourceId) {
-    AResource aResource = null;
-    // TODO Implement code to return a resource
 
-    // Start of user code getAResource
+    public static AResource getAResource(HttpServletRequest httpServletRequest, final String serviceProviderId, final String aResourceId)
+    {
+        AResource aResource = null;
+        
+        // Start of user code getAResource
     try {
       aResource = new AResource();
       aResource.setAbout(AResource.constructURI("1", "1"));
-      //aResource.setAProperty("111");
+      aResource.setAStringProperty("1asdas11");
+      aResource.setAnIntegerProperty(1234);
+      aResource.addASetOfDates(new Date());
+      aResource.addASetOfDates(new Date());
     } catch (URISyntaxException e) {
       e.printStackTrace();
     }
-    // End of user code
-    return aResource;
-  }
 
-  public static String getETagFromAResource(final AResource aResource) {
-    String eTag = null;
-    // TODO Implement code to return an ETag for a particular resource
-    // Start of user code getETagFromAResource
+    try {
+    	Schema schema = Validator.getSchema("/aResource-Shape.ttl");
+    	if (schema != null) {
+	    		Result r = Validator.validate(aResource, schema);
+	    		if (!r.isValid())
+	    			log.info(r.show());
+	    		else
+	    			log.info("Resource is Valid");
+	    	}
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
     // End of user code
-    return eTag;
-  }
+        return aResource;
+    }
+
+
+
+
+    public static String getETagFromAResource(final AResource aResource)
+    {
+        String eTag = null;
+        // Start of user code getETagFromAResource
+    // End of user code
+        return eTag;
+    }
 }
