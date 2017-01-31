@@ -240,11 +240,9 @@ public class AResource
     // End of user code
     @OslcName("aSetOfDates")
     @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aSetOfDates")
-    @OslcDescription("")
     @OslcOccurs(Occurs.OneOrMany)
     @OslcValueType(ValueType.DateTime)
     @OslcReadOnly(false)
-    @OslcTitle("")
     public HashSet<Date> getASetOfDates()
     {
         // Start of user code getterInit:aSetOfDates

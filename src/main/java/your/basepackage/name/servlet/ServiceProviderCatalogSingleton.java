@@ -72,21 +72,12 @@ public class ServiceProviderCatalogSingleton
 
     static
     {
-        try
-        {
-            serviceProviderCatalog = new ServiceProviderCatalog();
-
-            serviceProviderCatalog.setAbout(new URI(ServiceProviderRegistryURIs.getServiceProviderRegistryURI()));
-            serviceProviderCatalog.setTitle("SampleAdaptor Service Provider Catalog");
-            serviceProviderCatalog.setDescription("Service Provider Catalog for SampleAdaptor");
-        }
-        catch (final URISyntaxException exception)
-        {
-            // We should never get here.
-            throw new ExceptionInInitializerError(exception);
-        }
+        serviceProviderCatalog = new ServiceProviderCatalog();
+        URI catalogUri = UriBuilder.fromUri(ServletListener.getServicesBase()).path("/catalog/singleton").build();
+        serviceProviderCatalog.setAbout(catalogUri);
+        serviceProviderCatalog.setTitle("SampleAdaptor Service Provider Catalog");
+        serviceProviderCatalog.setDescription("Service Provider Catalog for SampleAdaptor");
     }
-
 
     private ServiceProviderCatalogSingleton()
     {

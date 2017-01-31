@@ -182,7 +182,7 @@ public class AResourceService
      */
     @OslcCreationFactory
     (
-         title = "",
+         title = "CreationFactory1",
          label = "",
          resourceShapes = {OslcConstants.PATH_RESOURCE_SHAPES + "/" + SampleAdaptorConstants.PATH_ARESOURCE},
          resourceTypes = {SampleAdaptorConstants.TYPE_ARESOURCE},

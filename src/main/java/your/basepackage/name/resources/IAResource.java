@@ -95,11 +95,9 @@ public interface IAResource
 
     @OslcName("aSetOfDates")
     @OslcPropertyDefinition(SampleAdaptorConstants.SAMPLEDOMAIN_NAMSPACE + "aSetOfDates")
-    @OslcDescription("")
     @OslcOccurs(Occurs.OneOrMany)
     @OslcValueType(ValueType.DateTime)
     @OslcReadOnly(false)
-    @OslcTitle("")
     public HashSet<Date> getASetOfDates();
 
     @OslcName("aReferenceProperty")
