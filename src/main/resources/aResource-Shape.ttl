@@ -18,14 +18,14 @@
    ] ; 
    sh:property [
      sh:predicate sam:anIntegerProperty;
-	 sh:datatype xsd:int;
+	 sh:datatype xsd:integer;
      sh:minCount 1 ;
      sh:maxCount 1 ;
    ] ;
    sh:property [
      sh:predicate sam:aSetOfDates;
 	 sh:datatype xsd:dateTime;
-     sh:minCount 1 ;
-     sh:maxCount 10 ;
+     sh:minCount 0 ;
+     sh:maxCount 0 ;
    ] .
    

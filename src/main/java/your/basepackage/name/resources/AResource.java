@@ -46,6 +46,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.eclipse.lyo.oslc4j.core.annotation.OslcAllowedValue;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcDescription;
+import org.eclipse.lyo.oslc4j.core.annotation.OslcMaxSize;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcMemberProperty;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcName;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcNamespace;
@@ -213,6 +214,7 @@ public class AResource
     @OslcOccurs(Occurs.ExactlyOne)
     @OslcValueType(ValueType.Integer)
     @OslcReadOnly(false)
+    @OslcMaxSize(1)
     public Integer getAnIntegerProperty()
     {
         // Start of user code getterInit:anIntegerProperty
@@ -229,6 +231,7 @@ public class AResource
     @OslcValueType(ValueType.String)
     @OslcReadOnly(false)
     @OslcTitle("a Property")
+    @OslcMaxSize(1)
     public String getAStringProperty()
     {
         // Start of user code getterInit:aStringProperty
@@ -243,6 +246,7 @@ public class AResource
     @OslcOccurs(Occurs.OneOrMany)
     @OslcValueType(ValueType.DateTime)
     @OslcReadOnly(false)
+    @OslcMaxSize(0)
     public HashSet<Date> getASetOfDates()
     {
         // Start of user code getterInit:aSetOfDates

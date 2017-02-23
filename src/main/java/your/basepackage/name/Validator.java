@@ -14,14 +14,18 @@ import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Resource;
 import org.eclipse.lyo.oslc4j.core.exception.OslcCoreApplicationException;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.eclipse.lyo.oslc4j.provider.jena.JenaModelHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.topbraid.shacl.validation.ValidationUtil;
+
 import scala.Option;
 import scala.util.Try;
 import your.basepackage.name.resources.AResource;
+import your.basepackage.name.resources.Shape;
 
 public class Validator {
 	public static final Option<String> OPTION_NONE = Option.apply(null);
@@ -86,5 +90,30 @@ public class Validator {
 		RDFAsJenaModel resourceAsRDFReader = new RDFAsJenaModel(resourceAsModel); 
 		return Validator.validate(resourceAsRDFReader, schema);
 	}
+	
+	public static Result validate(AbstractResource aResource, AbstractResource shape) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, DatatypeConfigurationException, OslcCoreApplicationException {
+		Model resourceAsModel = JenaModelHelper.createJenaModel(new Object[]{aResource});
+		RDFAsJenaModel resourceAsRDFReader = new RDFAsJenaModel(resourceAsModel);
+		Model shapeAsModel = JenaModelHelper.createJenaModel(new Object[]{shape});
+		RDFAsJenaModel shapeAsRDFReader = new RDFAsJenaModel(shapeAsModel); 
+		return Validator.validate(resourceAsRDFReader, shapeAsRDFReader);
+	}
+	
+	private static Result validate(RDFAsJenaModel resourceAsRDFReader, RDFAsJenaModel shapeAsRDFReader) {
+		Schema schema = null;
+		Try<Schema> schemaTry = Schemas.fromRDF(shapeAsRDFReader, "SHACLex");
+		if (schemaTry.isSuccess()) {
+			schema = schemaTry.get();
+		}
+		return Validator.validate(resourceAsRDFReader, schema);
+	}
+
+	public static Resource validate(AResource aResource, Shape shaclShape, boolean b) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, DatatypeConfigurationException, OslcCoreApplicationException {
+		Model resourceAsModel = JenaModelHelper.createJenaModel(new Object[]{aResource});
+		Model shapeAsModel = JenaModelHelper.createJenaModel(new Object[]{shaclShape});
+		Resource report = ValidationUtil.validateModel(shapeAsModel, resourceAsModel, true);
+		return report;
+	}
+
 
 }

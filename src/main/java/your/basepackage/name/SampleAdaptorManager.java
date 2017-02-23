@@ -23,23 +23,33 @@
 package your.basepackage.name;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.servlet.ServletContextEvent;
 import java.util.List;
 
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
+import org.apache.jena.rdf.model.Resource;
+import org.eclipse.lyo.oslc4j.core.exception.OslcCoreApplicationException;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
+import org.eclipse.lyo.oslc4j.core.model.Link;
+
 import your.basepackage.name.servlet.ServiceProviderCatalogSingleton;
 import your.basepackage.name.ServiceProviderInfo;
 import your.basepackage.name.resources.AResource;
 import your.basepackage.name.resources.AnotherResource;
-
+import your.basepackage.name.resources.ShaclShapeFactory;
+import your.basepackage.name.resources.Shape;
 
 // Start of user code imports
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.topbraid.shacl.util.ModelPrinter;
 
 import es.weso.schema.Schema;
+
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import es.weso.rdf.jena.RDFAsJenaModel;
@@ -149,6 +159,9 @@ public class SampleAdaptorManager {
       aResource.setAnIntegerProperty(1234);
       aResource.addASetOfDates(new Date());
       aResource.addASetOfDates(new Date());
+      Link aReferenceProperty = new Link();
+      aReferenceProperty.setValue(new URI("http://www.sampledomain.org/sam#AnotherResource"));
+	aResource.setAReferenceProperty(aReferenceProperty );
     } catch (URISyntaxException e) {
       e.printStackTrace();
     }
@@ -165,6 +178,25 @@ public class SampleAdaptorManager {
     } catch (Exception e) {
         e.printStackTrace();
     }
+    
+    Shape shaclShape = null;
+	try {
+		shaclShape = ShaclShapeFactory.createShaclShape(AResource.class);
+		System.out.println("INITIATED");
+		if (shaclShape != null) {
+//			Resource report = Validator.validate(aResource, shaclShape, true);
+//			System.out.println(ModelPrinter.get().print(report.getModel()));
+			Result r = Validator.validate(aResource, shaclShape);
+    		if (!r.isValid())
+    			log.info(r.show());
+    		else
+    			log.info("Resource is Valid");
+
+		}
+	}  catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     
     // End of user code
         return aResource;
