@@ -165,34 +165,27 @@ public class SampleAdaptorManager {
     } catch (URISyntaxException e) {
       e.printStackTrace();
     }
-
-    try {
-    	Schema schema = Validator.getSchema("/aResource-Shape.ttl");
-    	if (schema != null) {
-	    		Result r = Validator.validate(aResource, schema);
-	    		if (!r.isValid())
-	    			log.info(r.show());
-	    		else
-	    			log.info("Resource is Valid");
-	    	}
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+//
+//    try {
+//    	Schema schema = Validator.getSchema("/aResource-Shape.ttl");
+//    	if (schema != null) {
+//	    		Result r = Validator.validate(aResource, schema);
+//	    		if (!r.isValid())
+//	    			log.info(r.show());
+//	    		else
+//	    			log.info("Resource is Valid");
+//	    	}
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
     
-    Shape shaclShape = null;
 	try {
-		shaclShape = ShaclShapeFactory.createShaclShape(AResource.class);
-		System.out.println("INITIATED");
-		if (shaclShape != null) {
-//			Resource report = Validator.validate(aResource, shaclShape, true);
-//			System.out.println(ModelPrinter.get().print(report.getModel()));
-			Result r = Validator.validate(aResource, shaclShape);
+			Result r = aResource.validate();
     		if (!r.isValid())
     			log.info(r.show());
     		else
     			log.info("Resource is Valid");
 
-		}
 	}  catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

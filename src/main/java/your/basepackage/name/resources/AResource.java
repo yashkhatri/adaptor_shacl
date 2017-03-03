@@ -26,48 +26,41 @@
 
 package your.basepackage.name.resources;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.Iterator;
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import javax.ws.rs.core.UriBuilder;
+import java.util.Map;
 
-import org.eclipse.lyo.oslc4j.core.annotation.OslcAllowedValue;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.UriBuilder;
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import org.eclipse.lyo.oslc4j.core.annotation.OslcDescription;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcMaxSize;
-import org.eclipse.lyo.oslc4j.core.annotation.OslcMemberProperty;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcName;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcNamespace;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcOccurs;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcPropertyDefinition;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcRange;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcReadOnly;
-import org.eclipse.lyo.oslc4j.core.annotation.OslcRepresentation;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcResourceShape;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcTitle;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcValueType;
+import org.eclipse.lyo.oslc4j.core.annotation.ShaclMinCount;
+import org.eclipse.lyo.oslc4j.core.exception.OslcCoreApplicationException;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.eclipse.lyo.oslc4j.core.model.Link;
 import org.eclipse.lyo.oslc4j.core.model.Occurs;
-import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
-import org.eclipse.lyo.oslc4j.core.model.Representation;
 import org.eclipse.lyo.oslc4j.core.model.ValueType;
 
-import your.basepackage.name.servlet.ServletListener;
+import es.weso.schema.Result;
 import your.basepackage.name.SampleAdaptorConstants;
-import your.basepackage.name.resources.AnotherResource;
+import your.basepackage.name.Validator;
+import your.basepackage.name.servlet.ServletListener;
 
 // Start of user code imports
 // End of user code
@@ -231,7 +224,7 @@ public class AResource
     @OslcValueType(ValueType.String)
     @OslcReadOnly(false)
     @OslcTitle("a Property")
-    @OslcMaxSize(1)
+    @ShaclMinCount(50)
     public String getAStringProperty()
     {
         // Start of user code getterInit:aStringProperty
@@ -512,5 +505,8 @@ public class AResource
         return s;
     }
     
-    
+    public Result validate() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, DatatypeConfigurationException, OslcCoreApplicationException, URISyntaxException {
+    	Shape shaclShape = ShaclShapeFactory.createShaclShape(AResource.class);
+    	return Validator.validate(this, shaclShape);
+    }
 }
