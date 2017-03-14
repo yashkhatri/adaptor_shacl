@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.apache.jena.rdf.model.Resource;
@@ -14,14 +13,36 @@ import org.eclipse.lyo.oslc4j.core.model.Link;
 import org.topbraid.shacl.util.ModelPrinter;
 
 import es.weso.schema.Result;
+import es.weso.schema.Schema;
 import your.basepackage.name.Validator;
-import your.basepackage.name.exceptions.ResourceInvalidException;
 
 public class Tester {
 
 	public static void main(String[] args) {
+		
+		  AResource aResource = null;
+	        
+	        // Start of user code getAResource
+	    try {
+	      aResource = new AResource();
+	      aResource.setAbout(new URI("http://www.sampledomain.org/sam#AResource"));
+	      aResource.setAStringProperty("sas");
+	      aResource.setAnIntegerProperty(1234);
+	      aResource.addASetOfDates(new Date());
+	      Link aReferenceProperty = new Link();
+	      aReferenceProperty.setValue(new URI("http://www.sampledomain.org/sam#AnotherResource"));
+		  aResource.setAReferenceProperty(aReferenceProperty );
+		  
+		  Schema schema = Validator.getSchema("/aResource-Shape.ttl");
+			Result r = Validator.validate(aResource, schema);
+			System.out.println(r.errors());
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
 
-		getAResource();
+		
+		
+
 	}
 
 	 public static AResource getAResource() 

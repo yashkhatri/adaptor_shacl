@@ -15,10 +15,11 @@
 	 sh:datatype xsd:string;
      sh:minCount 1 ;
      sh:maxCount 1 ;
+     sh:in (A B) ;
    ] ; 
    sh:property [
      sh:predicate sam:anIntegerProperty;
-	 sh:datatype xsd:integer;
+	 sh:datatype xsd:int;
      sh:minCount 1 ;
      sh:maxCount 1 ;
    ] ;
@@ -26,6 +27,6 @@
      sh:predicate sam:aSetOfDates;
 	 sh:datatype xsd:dateTime;
      sh:minCount 0 ;
-     sh:maxCount 0 ;
+     sh:maxCount 1 ;
    ] .
    
