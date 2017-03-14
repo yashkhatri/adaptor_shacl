@@ -1,35 +1,20 @@
-/*******************************************************************************
- * Copyright (c) 2012, 2013 IBM Corporation.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- *	
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- * http://www.eclipse.org/org/documents/edl-v10.php.
- *
- * Contributors:
- *
- *	   Russell Boykin		- initial API and implementation
- *	   Alberto Giammaria	- initial API and implementation
- *	   Chris Peters			- initial API and implementation
- *	   Gianluca Bernardini	- initial API and implementation
- *	   Samuel Padgett		- support allowed and default values other than string
- *******************************************************************************/
+
 package your.basepackage.name.resources;
 
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.jena.rdf.model.Literal;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcAllowedValue;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcDescription;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcName;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcNamespace;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcOccurs;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcPropertyDefinition;
+import org.eclipse.lyo.oslc4j.core.annotation.OslcRdfCollectionType;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcReadOnly;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcResourceShape;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcTitle;
@@ -39,7 +24,6 @@ import org.eclipse.lyo.oslc4j.core.model.Occurs;
 import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
 import org.eclipse.lyo.oslc4j.core.model.ValueType;
 
-import com.github.jsonldjava.core.RDFDataset.Literal;
 
 @OslcNamespace(ShaclConstants.SHACL_CORE_NAMESPACE)
 @OslcName("property")
@@ -47,20 +31,35 @@ import com.github.jsonldjava.core.RDFDataset.Literal;
 public final class Property extends AbstractResource {
 
 	private URI predicate;
+	
+	//Value Type Constraints
+	private URI classType;
 	private ValueType dataType;
+	private URI nodeKind;
+	
+	//Cardinality Constraints
 	private BigInteger minCount;
 	private BigInteger maxCount;
 	
-	private Literal minExclusive;
-	private Literal maxExclusive;
-	private Literal minInclusive;
-	private Literal maxInclusive;
+	//Value Range Constraints
+	private BigInteger minExclusive;
+	private BigInteger maxExclusive;
+	private BigInteger minInclusive;
+	private BigInteger maxInclusive;
+	
+	//String Based Constraints
 	private BigInteger minLength;
 	private BigInteger maxLength;
-	private Literal pattern;
+	private String pattern;
 	private List<Literal> languageIn;
 	private Boolean uniqueLang;
-	private URI equals;
+	
+	//Values Based Constraints
+	private  Object[] in;
+	
+	//Non Validating Property Shape Characteristics.
+	private String name;
+	private String description;
 	
 	public Property() {
 		super();
@@ -118,6 +117,27 @@ public final class Property extends AbstractResource {
 		return null;
 	}
 
+	@OslcDescription("Specifies the description")
+	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "description")
+	@OslcTitle("Description")
+	@OslcValueType(ValueType.String)
+	@OslcName("description")
+	public String getDescription() {
+		return description;
+	}
+
+	@OslcDescription("Specifies the name")
+	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "name")
+	@OslcTitle("Name")
+	@OslcValueType(ValueType.String)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@OslcDescription("Specifies the min count")
 	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "minCount")
 	@OslcReadOnly
@@ -138,33 +158,33 @@ public final class Property extends AbstractResource {
 
 	@OslcDescription("Specifies the range: Min Exclusive")
 	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "minExclusive")
-	@OslcValueType(ValueType.XMLLiteral)
+	@OslcValueType(ValueType.String)
 	@OslcTitle("Range Min Exclusive")
-	public Literal getMinExclusive() {
+	public BigInteger getMinExclusive() {
 		return minExclusive;
 	}
 
 	@OslcDescription("Specifies the range: Max Exclusive")
 	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "maxExclusive")
-	@OslcValueType(ValueType.XMLLiteral)
+	@OslcValueType(ValueType.String)
 	@OslcTitle("Range Max Exclusive")
-	public Literal getMaxExclusive() {
+	public BigInteger getMaxExclusive() {
 		return maxExclusive;
 	}
 
 	@OslcDescription("Specifies the range: Min Inclusive")
 	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "minInclusive")
-	@OslcValueType(ValueType.XMLLiteral)
+	@OslcValueType(ValueType.String)
 	@OslcTitle("Range Min Inclusive")
-	public Literal getMinInclusive() {
+	public BigInteger getMinInclusive() {
 		return minInclusive;
 	}
 
 	@OslcDescription("Specifies the range: Max Inclusive")
 	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "maxInclusive")
-	@OslcValueType(ValueType.XMLLiteral)
+	@OslcValueType(ValueType.String)
 	@OslcTitle("Range Max Inclusive")
-	public Literal getMaxInclusive() {
+	public BigInteger getMaxInclusive() {
 		return maxInclusive;
 	}
 
@@ -188,7 +208,7 @@ public final class Property extends AbstractResource {
 	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "pattern")
 	@OslcValueType(ValueType.String)
 	@OslcTitle("Pattern")
-	public Literal getPattern() {
+	public String getPattern() {
 		return pattern;
 	}
 
@@ -208,26 +228,54 @@ public final class Property extends AbstractResource {
 		return uniqueLang;
 	}
 
-	@OslcDescription("Specifies the condition that the set of all value nodes is equal to the set of objects of the triples that have the focus node as subject and the value of sh:equals as predicate.")
-	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "equals")
-	@OslcTitle("Equals")
-	public URI getEquals() {
-		return equals;
+	@OslcDescription("Specifies the Class of a node")
+	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "class")
+	@OslcTitle("Class")
+	@OslcName("class")
+	public URI getClassType() {
+		return classType;
 	}
 
-	public void setMinExclusive(Literal minExclusive) {
+	@OslcDescription("Specifies the node kind. Values can be: sh:BlankNode, sh:IRI, sh:Literal sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral and sh:IRIOrLiteral")
+	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "nodeKind")
+	@OslcTitle("Node Kind")
+	public URI getNodeKind() {
+		return nodeKind;
+	}
+
+	@OslcDescription("specifies the condition that each value node is a member of a provided SHACL list.")
+	@OslcPropertyDefinition(ShaclConstants.SHACL_CORE_NAMESPACE + "in")
+	@OslcTitle("In")
+	@OslcRdfCollectionType
+	public Object[] getIn() {
+		return in;
+	}
+
+	public void setIn(Object[] in) {
+		this.in = in;
+	}
+
+	public void setNodeKind(URI nodeKind) {
+		this.nodeKind = nodeKind;
+	}
+
+	public void setClassType(URI classType) {
+		this.classType = classType;
+	}
+
+	public void setMinExclusive(BigInteger minExclusive) {
 		this.minExclusive = minExclusive;
 	}
 
-	public void setMaxExclusive(Literal maxExclusive) {
+	public void setMaxExclusive(BigInteger maxExclusive) {
 		this.maxExclusive = maxExclusive;
 	}
 
-	public void setMinInclusive(Literal minInclusive) {
+	public void setMinInclusive(BigInteger minInclusive) {
 		this.minInclusive = minInclusive;
 	}
 
-	public void setMaxInclusive(Literal maxInclusive) {
+	public void setMaxInclusive(BigInteger maxInclusive) {
 		this.maxInclusive = maxInclusive;
 	}
 
@@ -239,7 +287,7 @@ public final class Property extends AbstractResource {
 		this.maxLength = maxLength;
 	}
 
-	public void setPattern(Literal pattern) {
+	public void setPattern(String pattern) {
 		this.pattern = pattern;
 	}
 
@@ -249,10 +297,6 @@ public final class Property extends AbstractResource {
 
 	public void setUniqueLang(Boolean uniqueLang) {
 		this.uniqueLang = uniqueLang;
-	}
-
-	public void setEquals(URI equals) {
-		this.equals = equals;
 	}
 
 	public void setDataType(ValueType dataType) {
@@ -266,15 +310,19 @@ public final class Property extends AbstractResource {
 	public void setMaxCount(BigInteger maxCount) {
 		this.maxCount = maxCount;
 	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	@Override
 	public String toString() {
-		return "Property [predicate=" + predicate + ", dataType=" + dataType + ", minCount=" + minCount + ", maxCount="
-				+ maxCount + ", minExclusive=" + minExclusive + ", maxExclusive=" + maxExclusive + ", minInclusive="
-				+ minInclusive + ", maxInclusive=" + maxInclusive + ", minLength=" + minLength + ", maxLength="
-				+ maxLength + ", pattern=" + pattern + ", languageIn=" + languageIn + ", uniqueLang=" + uniqueLang
-				+ ", equals=" + equals + "]";
+		return "Property [predicate=" + predicate + ", classType=" + classType + ", dataType=" + dataType
+				+ ", nodeKind=" + nodeKind + ", minCount=" + minCount + ", maxCount=" + maxCount + ", minExclusive="
+				+ minExclusive + ", maxExclusive=" + maxExclusive + ", minInclusive=" + minInclusive + ", maxInclusive="
+				+ maxInclusive + ", minLength=" + minLength + ", maxLength=" + maxLength + ", pattern=" + pattern
+				+ ", languageIn=" + languageIn + ", uniqueLang=" + uniqueLang + ", in=" + Arrays.toString(in)
+				+ ", name=" + name + ", description=" + description + "]";
 	}
-
 
 }

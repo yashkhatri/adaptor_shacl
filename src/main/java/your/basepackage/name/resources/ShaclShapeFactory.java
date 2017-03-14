@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.lyo.oslc4j.core.annotation.OslcMaxSize;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcName;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcNamespace;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcPropertyDefinition;
@@ -30,6 +29,16 @@ import org.eclipse.lyo.oslc4j.core.exception.OslcCoreMissingSetMethodException;
 import org.eclipse.lyo.oslc4j.core.model.IReifiedResource;
 import org.eclipse.lyo.oslc4j.core.model.InheritedMethodAnnotationHelper;
 import org.eclipse.lyo.oslc4j.core.model.ValueType;
+
+import your.basepackage.name.annotations.ShaclClass;
+import your.basepackage.name.annotations.ShaclIn;
+import your.basepackage.name.annotations.ShaclMaxCount;
+import your.basepackage.name.annotations.ShaclMaxExclusive;
+import your.basepackage.name.annotations.ShaclMaxInclusive;
+import your.basepackage.name.annotations.ShaclMinCount;
+import your.basepackage.name.annotations.ShaclMinExclusive;
+import your.basepackage.name.annotations.ShaclMinInclusive;
+import your.basepackage.name.annotations.ShaclName;
 
 public final class ShaclShapeFactory {
 	private static final String METHOD_NAME_START_GET = "get";
@@ -180,14 +189,59 @@ public final class ShaclShapeFactory {
 
 		property.setDataType(valueType);
 		
-		final OslcMaxSize maxCountAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, OslcMaxSize.class);
+		final ShaclMaxCount maxCountAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclMaxCount.class);
 		if (maxCountAnnotation != null) {
 			property.setMaxCount(new BigInteger(String.valueOf(maxCountAnnotation.value())));
 		}
 		
-		final OslcMaxSize minCountAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, OslcMaxSize.class);
+		final ShaclMinCount minCountAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclMinCount.class);
 		if (minCountAnnotation != null) {
-			property.setMinCount(new BigInteger(String.valueOf(maxCountAnnotation.value())));
+			property.setMinCount(new BigInteger(String.valueOf(minCountAnnotation.value())));
+		}
+		
+		final ShaclMinExclusive minExclusiveAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclMinExclusive.class);
+		if (minExclusiveAnnotation != null) {
+			property.setMinExclusive(new BigInteger(String.valueOf(minExclusiveAnnotation.value())));
+		}
+		
+		final ShaclMaxExclusive maxExclusiveAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclMaxExclusive.class);
+		if (minExclusiveAnnotation != null) {
+			property.setMaxExclusive(new BigInteger(String.valueOf(maxExclusiveAnnotation.value())));
+		}
+		
+		final ShaclMinInclusive minInclusiveAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclMinInclusive.class);
+		if (minInclusiveAnnotation != null) {
+			property.setMinInclusive(new BigInteger(String.valueOf(minInclusiveAnnotation.value())));
+		}
+		
+		final ShaclMaxInclusive maxInclusiveAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclMaxInclusive.class);
+		if (maxInclusiveAnnotation != null) {
+			property.setMinExclusive(new BigInteger(String.valueOf(maxInclusiveAnnotation.value())));
+		}
+		
+		final ShaclClass shaclClass = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclClass.class);
+		if (shaclClass != null) {
+			property.setClassType(new URI(shaclClass.value()));
+		}
+		
+		final ShaclName shaclName = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclName.class);
+		if (shaclName != null) {
+			property.setName(shaclName.value());
+		}
+		
+		final ShaclIn inAnnotation = InheritedMethodAnnotationHelper.getAnnotation(method, ShaclIn.class);
+		if (inAnnotation != null) {
+			Object[] object = new Object[inAnnotation.value().length];
+			for(int i = 0;i < inAnnotation.value().length; i++) {
+				if(inAnnotation.valueType().equalsIgnoreCase("Integer")) {
+					object[i] =  new BigInteger(inAnnotation.value()[i]);
+				} else if (inAnnotation.valueType().equalsIgnoreCase("String")){
+					object[i] =  inAnnotation.value()[i];
+				} else if(inAnnotation.valueType().equalsIgnoreCase("URI")) {
+					object[i] =  new URI(inAnnotation.value()[i]);
+				}
+			}
+			property.setIn(object);
 		}
 
 
